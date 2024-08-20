@@ -24,10 +24,11 @@ private String MCState = "IDLE";
 private static Duration frameDuration = Duration.millis(150);
 private ArrayList<Image> Frame = new ArrayList<>();
 private static Timeline timeline = new Timeline();
+private ImageView McImageView = new ImageView(new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/MC/ANIMATION/MOVEMENT/IDLE/IDLE_DOWN.png")));
 @FXML
 private Pane GamePane;
-@FXML
-private ImageView McImageView;
+
+
 void FillArray() {
 	for(int i = 0 ; i<3 ; i++ ) {
 		Frame.add(new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/MC/ANIMATION/MOVEMENT/"+MCState+"/"+MCState+(i+1)+".png")));
@@ -61,7 +62,8 @@ Timeline AddKeyFrame() {
 
 @Override
 public void initialize(URL arg0, ResourceBundle arg1) {
-
+    TileMap tileMap = new TileMap(GamePane);
+    tileMap.fillMap();
 	Image image = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/MC/ANIMATION/MOVEMENT/IDLE/IDLE_DOWN.png"));
 	McImageView.setImage(image);
 	McImageView.setX(100);
@@ -72,7 +74,7 @@ public void initialize(URL arg0, ResourceBundle arg1) {
 	McImageView.setFitWidth(48); // Adjust to the scaled size
 	McImageView.setFitHeight(48); // Adjust to the scaled size
 	McImageView.setFocusTraversable(false);
-	
+	GamePane.getChildren().add(McImageView);
 	
 	GamePane.setMinHeight(PaneData.GetMinHeight());
 	GamePane.setMinWidth(PaneData.GetMinWidth());
