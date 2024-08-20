@@ -25,6 +25,7 @@ public class Main extends Application {
             primaryStage.show();
             primaryStage.setMinHeight(PaneData.GetMinHeight());
             primaryStage.setMinWidth(PaneData.GetMinWidth());
+            
            
         } catch (Exception e) {
             e.printStackTrace();

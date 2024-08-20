@@ -1,6 +1,7 @@
 package application.BackEnd;
 
 public class PaneData {
+private static final int PixelMovement = 3;
 private static final int OriginalTileSize = 16;
 private static final int MinScale = 3;
 private static final int MinScalingTileSize = OriginalTileSize*MinScale;
@@ -9,6 +10,10 @@ private static final int NumberColumn = 16;
 
 private static final double MinWidth = NumberColumn*MinScalingTileSize;
 private static final double MinHeight = NumberRows*MinScalingTileSize;
+
+public static int GetPix() {
+	return PixelMovement;
+}
 
 public static double GetMinWidth() { 
 	return MinWidth;
