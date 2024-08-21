@@ -1,5 +1,12 @@
 package application.FrontEnd;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import javafx.scene.image.*;
 import javafx.scene.layout.Pane;
 
@@ -8,8 +15,23 @@ Pane gamePane;
 Image GrassTile;
 Image WaterTile;
 Image WallTile;
+Image FloorMiddleWoodTile;
+Image FloorLeftWoodTile;
+Image FloorRightWoodTile;
+Image WallWoodTile;
+
+public void loadMap() {
+	  Gson gson = new Gson();
+      try (FileReader reader = new FileReader("C:\\Users\\DELL\\eclipse-workspace\\Rabby\\src\\Ressource\\PNG Folder\\MAP\\MAP1.json")) { // Update with your JSON file path
+          Type gridMapType = new TypeToken<int[][]>() {}.getType();
+          GridMap = gson.fromJson(reader, gridMapType); // Directly deserialize to int[][]
+      } catch (IOException e) {
+          e.printStackTrace(); // Handle the exception (log, show an error message, etc.)
+      }
+  }
 
 public TileMap(Pane gamePane){
+	loadMap();
 	this.gamePane = gamePane;
 	InitializeImages();
 }
@@ -17,23 +39,17 @@ public void InitializeImages() {
 	GrassTile = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/TILES/Grass.png"));
 	WaterTile = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/TILES/Water.png"));
 	WallTile = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/TILES/WALL.png"));
-   
+	FloorMiddleWoodTile = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/TILES/WOOD/FloormiddleWood.png"));
+	FloorRightWoodTile = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/TILES/WOOD/FloorRightWood.png"));
+	FloorLeftWoodTile = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/TILES/WOOD/FloorleftWood.png"));
+	WallWoodTile = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/TILES/WOOD/WallWood.png"));
+       
+
 }
-int[][] GridMap= {
-		{1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,0,1,1,1,1,1,1,0,1,1,1,0,1,1,1},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,2,2,1,1,1,1,1,0,1,1,1,1,1},
-		{1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1},
-		{1,0,1,2,2,1,1,1,2,2,1,1,1,1,1,1},
-		{1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1},
-		{1,0,1,1,1,1,1,1,2,1,1,1,0,1,1,1},
-		{1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,1,1,1,2,2,1,1,2,1,1,1,1,1,1,1}
+int[][] GridMap = new int [12][16]; 
 		
-};
+		
+
 
 public void fillMap() {
 	
@@ -43,14 +59,18 @@ public void fillMap() {
 			TileView.setFitHeight(48);
 			TileView.setFitWidth(48);
 			switch(GridMap[i][j]) {
-			case 0:
-				TileView.setImage(WallTile);
-				break;
+			
 			case 1:
-				TileView.setImage(GrassTile);
+				TileView.setImage(WallWoodTile);
 				break;
 			case 2:
-				TileView.setImage(WaterTile);
+				TileView.setImage(FloorMiddleWoodTile);
+				break;
+			case 3:
+				TileView.setImage(FloorRightWoodTile);
+				break;
+			case 4:
+				TileView.setImage(FloorLeftWoodTile);
 				break;
 			}
 			TileView.setLayoutX(j*48);
