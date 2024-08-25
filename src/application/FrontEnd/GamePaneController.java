@@ -33,6 +33,7 @@ private boolean collisionRight = false;
 private static Duration frameDuration = Duration.millis(150);
 private ArrayList<Image> Frame = new ArrayList<>();
 private static Timeline timeline = new Timeline();
+private static  BuildingPauseMenu build;
 private ImageView McImageView = new ImageView(new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/MC/ANIMATION/MOVEMENT/IDLE/IDLE_DOWN.png")));
 static TileMap tileMap; 
 @FXML
@@ -229,6 +230,7 @@ Timeline AddKeyFrame() {
 @Override
 public void initialize(URL arg0, ResourceBundle arg1) {
     colliedArea.setVisible(false);
+     build = new BuildingPauseMenu(GamePane);
 	tileMap = new TileMap(GamePane);
     tileMap.fillMap();
     collisionArea.setFill(Color.rgb(255, 0, 0, 0.5)); // Semi-transparent red
@@ -264,12 +266,47 @@ void AnimationToIDLE() {
 	McImageView.setImage(new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/MC/ANIMATION/MOVEMENT/IDLE/IDLE_"+MCState+".png")));
     MCState="IDLE";
 }
+
+
 void StopAnimation(KeyEvent event) {
 	System.out.println("StopAnimation");
 	timeline.stop();
 	AnimationToIDLE();
 }
 
+
+void KeyEventReleased(KeyEvent event) {
+	if(IsMoving(event)) {
+		StopAnimation(event);
+	}
+}
+
+
+boolean IsMoving(KeyEvent event) {
+	return event.getCode() == KeyCode.RIGHT||event.getCode() == KeyCode.DOWN||event.getCode() == KeyCode.LEFT||event.getCode() == KeyCode.UP;
+}
+
+void KeyEventPressed(KeyEvent event) {
+	if(IsMoving(event)) {
+		MCMovement(event);
+	}
+	else {
+		if(event.getCode() == KeyCode.ESCAPE) {
+			MenuEvent();
+		}
+	}
+}
+
+void MenuEvent() {
+	build.EscapeHit++;
+	if(build.EscapeHit%2 == 0) {
+		build.RemoveMenu();
+	}
+	else {
+		build.SetMenu();
+	}
+	
+}
 
 void MCMovement(KeyEvent event){
 	String NewState = "";
@@ -346,8 +383,8 @@ private void updateGameLayout(double scale) {
 	if (this.scene != null) {
        scene.widthProperty().addListener((obs, oldVal, newVal) -> updateScale(scene.getWidth(), scene.getHeight()));
        scene.heightProperty().addListener((obs, oldVal, newVal) -> updateScale(scene.getWidth(), scene.getHeight()));
-       scene.setOnKeyPressed(this::MCMovement);
-       scene.setOnKeyReleased(this::StopAnimation);
+       scene.setOnKeyPressed(this::KeyEventPressed);
+       scene.setOnKeyReleased(this::KeyEventReleased);
     }
  }
 }
