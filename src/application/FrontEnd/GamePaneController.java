@@ -276,7 +276,7 @@ void StopAnimation(KeyEvent event) {
 
 
 void KeyEventReleased(KeyEvent event) {
-	if(IsMoving(event)) {
+	if(build.EscapeHit%2==0 && IsMoving(event)) {
 		StopAnimation(event);
 	}
 }
