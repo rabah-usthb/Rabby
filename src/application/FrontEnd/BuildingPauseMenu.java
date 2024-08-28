@@ -1,10 +1,14 @@
 package application.FrontEnd;
 
+import java.io.File;
+
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -29,6 +33,13 @@ Button LoadButton;
 Button QuitButton;
 Pane gamePane;
 ImageView BackgroundImageView ;
+String userDir = System.getProperty("user.dir");
+Media OpeningMenu = new Media (new File (userDir+"/src/Ressource/Audio Folder/PauseMenu/OpeningMenu.mp3").toURI().toString());
+Media ClosingMenu = new Media (new File (userDir+"/src/Ressource/Audio Folder/PauseMenu/ClosingMenu.mp3").toURI().toString());
+Media ChangingButton = new Media (new File (userDir+"/src/Ressource/Audio Folder/PauseMenu/ChangingButton.mp3").toURI().toString());
+Media ClickingButton = new Media (new File (userDir+"/src/Ressource/Audio Folder/PauseMenu/ClickingButton.wav").toURI().toString());
+MediaPlayer playAudio;
+
 int EscapeHit = 0;
 
 void SetRectangle() {
@@ -52,7 +63,7 @@ void RemoveMenu() {
 	gamePane.getChildren().remove(SaveButton);
 	gamePane.getChildren().remove(OptionButton);
 	gamePane.getChildren().remove(QuitButton);
-
+    ChangeMedia(ClosingMenu);
  }
 
 void RemoveDefaultCss(Button button) {
@@ -92,9 +103,23 @@ void SetButtonMenu() {
 	gamePane.getChildren().add(SaveButton);
 	gamePane.getChildren().add(OptionButton);
 	gamePane.getChildren().add(QuitButton);
+	
+}
+
+void ChangeMedia(Media media) {
+	if(playAudio!=null&& !(playAudio.getMedia() == media)) {
+	playAudio.stop();
+	playAudio.dispose();
+	}
+	
+	playAudio = new MediaPlayer(media);
+	playAudio.setVolume(1.0);
+	playAudio.setMute(false);
+	playAudio.play();
 }
 
 void SetMenu() {
+	ChangeMedia(OpeningMenu);
 	SetRectangle();
 	SetBackgroundMenu();
 	SetButtonMenu();
@@ -193,7 +218,11 @@ void HitBottomTop(Button button) {
 	  }
 	  
 	  else if (e.getCode() == KeyCode.ENTER) {
+		  ChangeMedia(ClickingButton);
 		  SetClickedImage(button);
+	  }
+	  else if(e.getCode()== KeyCode.UP||e.getCode()== KeyCode.DOWN||e.getCode()== KeyCode.LEFT||e.getCode()== KeyCode.RIGHT) {
+	ChangeMedia(ChangingButton);	  
 	  }
   });
   
@@ -215,6 +244,7 @@ void setHoverEffect(Button button) {
          } else {
              SetNormalImage(button);  
          }
+        
      });}
 
 void initialiseButton() {
