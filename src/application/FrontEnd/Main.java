@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 
 
@@ -13,7 +14,8 @@ public class Main extends Application {
 	@Override
 	 public void start(Stage primaryStage) {
         try {
-        	
+        	primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/GameIcon.png")));
+
             // Load the FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Ressource/Fxml Folder/GamePane.fxml"));
             Parent root = loader.load();

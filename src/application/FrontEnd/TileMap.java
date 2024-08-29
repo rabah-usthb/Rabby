@@ -83,7 +83,7 @@ public void fillMap() {
 			}
 			TileView.setLayoutX(j*48);
 			TileView.setLayoutY(i*48);
-			Rectangle rec = new Rectangle(j*48,i*48,48,48);
+/*			Rectangle rec = new Rectangle(j*48,i*48,48,48);
 			if(cmp%2==0) {
 				rec.setFill(Color.rgb(0, 0, 255, 0.45));
 			}else {
@@ -100,9 +100,9 @@ public void fillMap() {
 
 	        // Combine Rectangle and Text in a Group
 	        Group group = new Group(rec, text);
-
+ this.gamePane.getChildren().add(group);
+*/	
 			this.gamePane.getChildren().add(TileView);
-			this.gamePane.getChildren().add(group);
 		cmp++;
 		}
 		cmp++;

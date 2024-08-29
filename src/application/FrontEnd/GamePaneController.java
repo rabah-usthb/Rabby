@@ -36,92 +36,109 @@ private static Timeline timeline = new Timeline();
 private static  BuildingPauseMenu build;
 private ImageView McImageView = new ImageView(new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/MC/ANIMATION/MOVEMENT/IDLE/IDLE_DOWN.png")));
 static TileMap tileMap; 
+private static ImageView McShadow;
 @FXML
 private Pane GamePane;
+void UpdateShadowsXY() {
+	McShadow.setX(McImageView.getX()-3);
+	McShadow.setY(McImageView.getY()+24);
+    
+}
+
+void setShadow() {
+	Image shadow = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/MC/McShadow.png"));
+	McShadow = new ImageView(shadow);
+	McShadow.setFitWidth(48+6-3);
+	McShadow.setFitHeight(24);
+	UpdateShadowsXY();
+	GamePane.getChildren().add(McShadow);
+	McShadow.setVisible(true);
+}
 
 void UpdatingCollision() {
 	int rowCollisionArea =(int) (collisionArea.getY()/48);
 	int columnCollisionArea =(int) (collisionArea.getX()/48);
     switch(MCState) {
 	case "TOP":
-		columnCollisionArea =(int) ((collisionArea.getX()+collisionArea.getWidth())/48);
+		//columnCollisionArea =(int) ((collisionArea.getX()+collisionArea.getWidth())/48);
+		
 		System.out.println("row "+rowCollisionArea);
 		System.out.println("column "+columnCollisionArea);
 		collisionTop = false;
 		for(CollisionCoordinate coordinate : tileMap.arrayCollision) {
-			if(coordinate.column == columnCollisionArea) {
+			if(coordinate.column == columnCollisionArea &&coordinate.row!=rowCollisionArea ) {
 				Rectangle recSolid = new Rectangle(coordinate.column*48,coordinate.row*48 , 48, 48);
-				   if (collisionArea.getBoundsInParent().intersects(recSolid.getBoundsInParent())) {
 			            Bounds r1Bounds = collisionArea.getBoundsInParent();
 			            Bounds r2Bounds = recSolid.getBoundsInParent();
 			            double r1Top = r1Bounds.getMinY();
 			            double r2Bottom = r2Bounds.getMaxY();
-			            if(Math.abs(r1Top-r2Bottom)<=10) {
+			            if(Math.abs(r1Top-r2Bottom)<=3) {
 			            	collisionTop = true;
 			            	break;
 			            }
-			}
+			
 				   
 		}
 		}
 		break;
 	case "LEFT":
 		collisionLeft = false;
+		System.out.println("row "+rowCollisionArea);
+		System.out.println("column "+columnCollisionArea);
+	
 		for(CollisionCoordinate coordinate : tileMap.arrayCollision) {
-			if(coordinate.row == rowCollisionArea) {
+			
+			if(coordinate.row == rowCollisionArea && coordinate.column!=columnCollisionArea) {
+			  System.out.println("enter if");
 				Rectangle recSolid = new Rectangle(coordinate.column*48,coordinate.row*48 , 48, 48);
-				   if (collisionArea.getBoundsInParent().intersects(recSolid.getBoundsInParent())) {
-			        System.out.println("Intersect left");
 					    Bounds r1Bounds = collisionArea.getBoundsInParent();
 			            Bounds r2Bounds = recSolid.getBoundsInParent();
 			            double r1Left = r1Bounds.getMinX();
 			            double r2Right = r2Bounds.getMaxX();
 			            System.out.println("LEFT COLLISION "+r1Left);
 			            System.out.println("RIGHT TILE "+r2Right);
-			            if(Math.abs(r1Left-r2Right)<=10) {
+			            if(Math.abs(r1Left-r2Right)<=3) {
 			            	
 			            	collisionLeft = true;
 			            	break;
 			            	   }
-			}
+			
 				   
 				  
 		}
 		}
 		break;
 	case "RIGHT":
+		collisionRight = false;
 		for(CollisionCoordinate coordinate : tileMap.arrayCollision) {
 			if(coordinate.row == rowCollisionArea) {
 				System.out.println("enter if");
 				Rectangle recSolid = new Rectangle(coordinate.column*48,coordinate.row*48 , 48, 48);
-				   if (collisionArea.getBoundsInParent().intersects(recSolid.getBoundsInParent())) {
-			         System.out.println("Intersection");
+				     System.out.println("Intersection");
 					   Bounds r1Bounds = collisionArea.getBoundsInParent();
 			            Bounds r2Bounds = recSolid.getBoundsInParent();
 			            double r1Right = r1Bounds.getMaxX();
 			            double r2Left = r2Bounds.getMinX();
 			            System.out.println("Collision Right "+r1Right);
 			            System.out.println("Tile Left "+r2Left);
-			            if(Math.abs(r1Right-r2Left) <= 10) {
+			            if(Math.abs(r1Right-r2Left) <= 3) {
 			            	collisionRight = true;
-			            	
+			            	break;
 			            }
 			            
-			}
-				   else {
-		            	collisionRight = false;
-		            }
+			
 		}
 		}
 		break;
 	case "DOWN":
+		collisionDown = false;
 		System.out.println("row "+rowCollisionArea);
 		System.out.println("column "+columnCollisionArea);
 		
 		for(CollisionCoordinate coordinate : tileMap.arrayCollision) {
 			if(coordinate.column == columnCollisionArea) {
 				Rectangle recSolid = new Rectangle(coordinate.column*48,coordinate.row*48 , 48, 48);
-				   if (collisionArea.getBoundsInParent().intersects(recSolid.getBoundsInParent())) {
+				  
 			            Bounds r1Bounds = collisionArea.getBoundsInParent();
 			            Bounds r2Bounds = recSolid.getBoundsInParent();
 			            double r1Bottom = r1Bounds.getMaxY();
@@ -132,10 +149,7 @@ void UpdatingCollision() {
 			            }
 			            
 			}
-				   else {
-		            	collisionDown = false;
-		            }
-		}
+		
 		}
 		break;
 		
@@ -235,6 +249,7 @@ public void initialize(URL arg0, ResourceBundle arg1) {
     tileMap.fillMap();
     collisionArea.setFill(Color.rgb(255, 0, 0, 0.5)); // Semi-transparent red
     colliedArea.setFill(Color.rgb(0, 255, 0, 0.45));
+   collisionArea.setVisible(false);
     Image image = new Image(getClass().getResourceAsStream("/Ressource/PNG Folder/MC/ANIMATION/MOVEMENT/IDLE/IDLE_DOWN.png"));
 	
 	McImageView.setImage(image);
@@ -246,7 +261,9 @@ public void initialize(URL arg0, ResourceBundle arg1) {
 	McImageView.setFitWidth(48); // Adjust to the scaled size
 	McImageView.setFitHeight(48); // Adjust to the scaled size
 	McImageView.setFocusTraversable(false);
+	setShadow();
 	GamePane.getChildren().add(McImageView);
+	
 	updateCollisionAreaXY();
 
 	GamePane.getChildren().add(collisionArea);
@@ -352,7 +369,8 @@ void MCMovement(KeyEvent event){
 		}
 	}
     updateCollisionAreaXY();
-	if(!NewState.equals(MCState)) {
+    UpdateShadowsXY();
+    if(!NewState.equals(MCState)) {
 	System.out.println(MCState);
 	MCState = NewState;
 	FillFrame();
