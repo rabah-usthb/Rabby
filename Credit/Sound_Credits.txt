@@ -1,0 +1,17 @@
+<===============Sounds_Credit============================>
+All sounds used are under the "src/Ressource/Audio Folder" Folder
+
+I."Pause Menu" Folder :
+    
+  1.ClickingButton.wav made by el boss 
+     link to the audio : https://freesound.org/people/el_boss/sounds/571578/
+  
+  2.ChangingButtton.mp3 made by plasterbrain
+     link to audio : https://freesound.org/people/plasterbrain/sounds/464903/
+
+  3.OpeningMenu.mp3 made by pumodi
+     link to audio : https://freesound.org/people/pumodi/sounds/150222/
+  
+  4.ClosingMenu.mp3 made by pumodi
+     link to audio : https://freesound.org/people/pumodi/sounds/150218/
+     
